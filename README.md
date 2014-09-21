@@ -5,10 +5,7 @@ Meteor package for sending email via Mandrill
 
 ##  Installation
 
-```
-sh
-$ meteor add wylio:mandrill
-```
+`sh $ meteor add wylio:mandrill`
 
 ### Example Usage for SMTP email
     # in server code
