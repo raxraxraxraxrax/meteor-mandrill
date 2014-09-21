@@ -5,55 +5,61 @@ Meteor package for sending email via Mandrill
 
 ##  Installation
 
-``` sh
+```
+sh
 $ meteor add wylio:mandrill
 ```
 
-### Usage for SMTP email
+### Example Usage for SMTP email
     # in server code
     Meteor.startup(function() {
-      return Meteor.Mandrill.config({
-        username: "YOUR_MANDRILL_USERNAME",
-        key: "YOUR_MANDRILL_API_KEY"
-      });
+        return Meteor.Mandrill.config({
+            username: "YOUR_MANDRILL_USERNAME",
+            key: "YOUR_MANDRILL_API_KEY"
+        });
     });
 
     this.sendEmail = function(to, subject, htmlText) {
-      return Meteor.Mandrill.send({
-        to: to,
-        from: fromEmail,
-        subject: subject,
-        html: htmlText
-      });
+        return Meteor.Mandrill.send({
+            to: to,
+            from: fromEmail,
+            subject: subject,
+            html: htmlText
+        });
     };
 
-### Usage for API email
-# Read more on how to use merge tags in the Mandrill Docs
-# http://help.mandrill.com/entries/21678522-How-do-I-use-merge-tags-to-add-dynamic-content-
-    # in server code
+### Example API usage
+ Read more on how to use merge tags in the [Mandrill docs.](http://help.mandrill.com/entries/21678522-How-do-I-use-merge-tags-to-add-dynamic-content-)
+
+The `sendTemplate` method uses Mandrill's `https://mandrillapp.com/api/1.0/messages/send-template.json` call.
+
+Find out what else you can send, including how to send [mc:edit](http://help.mandrill.com/entries/21694286-How-do-I-add-dynamic-content-using-editable-regions-in-my-template-) regions, by reviewing the [Mandrill API documentation.](https://mandrillapp.com/api/docs/messages.JSON.html#method=send-template)
+
+    #server code
     Meteor.Mandrill.sendTemplate({
-      key: "YOUR_MANDRILL_API_KEY",
-      templateSlug: "test1",
-      globalMergeVars: [
-        {
-          name: "var1",
-          content: "Global Value 1"
+        "key": "YOUR_MANDRILL_API_KEY",
+        "template_name": "YOUR_TEMPLATE_SLUG_NAME",
+        "message": {
+            "global_merge_vars": [
+                {
+                    "name": "var1",
+                    "content": "Global Value 1"
+                }
+            ],
+            "merge_vars": [
+                {
+                    "rcpt": "email@example.com",
+                    "vars": [
+                        {
+                            "name": "fname",
+                            "content": "John"
+                        },
+                        {
+                            "name": "lname",
+                            "content": "Smith"
+                        }
+                    ]
+                }
+            ]
         }
-      ],
-      mergeVars: [
-        {
-          "rcpt": "email@example.com",
-          "vars": [
-            {
-              "name": "fname",
-              "content": "John"
-            }, {
-              "name": "lname",
-              "content": "Smith"
-            }
-          ]
-        }
-      ],
-      fromEmail: "from@example.com",
-      toEmail: "to@example.com"
     });
