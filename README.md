@@ -36,6 +36,9 @@ Find out what else you can send, including how to send [mc:edit](http://help.man
     Meteor.Mandrill.sendTemplate({
         "key": "YOUR_MANDRILL_API_KEY",
         "template_name": "YOUR_TEMPLATE_SLUG_NAME",
+        "template_content": [
+          {}
+        ],
         "message": {
             "global_merge_vars": [
                 {
@@ -57,6 +60,9 @@ Find out what else you can send, including how to send [mc:edit](http://help.man
                         }
                     ]
                 }
+            ],
+            "to": [
+            {"email": email@example.com}
             ]
         }
     });
